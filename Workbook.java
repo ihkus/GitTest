@@ -46,8 +46,12 @@ public class Workbook {
 	{
 		XSSFRow currentRow=getRow(rowNumber);
 		if(columnsToMerge>1)
-		mergeArea(rowNumber,rowNumber,currentRow.getLastCellNum()+1,currentRow.getLastCellNum()+columnsToMerge+1);
+		{
+		mergeArea(rowNumber,rowNumber,currentRow.getLastCellNum()+1,currentRow.getLastCellNum()+columnsToMerge);
 		currentRow.createCell(currentRow.getLastCellNum()+1).setCellValue(data);
+		}
+		else
+		currentRow.createCell(currentRow.getLastCellNum()==-1?0:currentRow.getLastCellNum()).setCellValue(data);
 		
 		
 	}
