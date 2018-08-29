@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import org.w3c.dom.Node;
+
 public class CustomNode {
 
 	private int level;
@@ -11,7 +13,10 @@ public class CustomNode {
 	private boolean supportMultipleValues;
 	private String value;
 	private int grandChildrenCount;
-	public CustomNode(CustomNode parent,String name,int level, boolean optional, boolean supportMultipleValues)
+	private int startCol;
+	private int endCol;
+	private Node domParserNode;
+	public CustomNode(CustomNode parent,String name,int level, boolean optional, boolean supportMultipleValues, Node domParserNode)
 	{
 		this.parent=parent;
 		this.name=name;
@@ -23,7 +28,7 @@ public class CustomNode {
 		if(parent!=null)
 		parent.produceChild(this);
 		
-		
+		this.domParserNode=domParserNode;
 	}
 
 	private void produceChild(CustomNode child) {
@@ -95,6 +100,22 @@ public class CustomNode {
 		this.grandChildrenCount = grandChildrenCount;
 	}
 
+	public int getStartCol() {
+		return startCol;
+	}
+
+	public void setStartCol(int startCol) {
+		this.startCol = startCol;
+	}
+
+	public int getEndCol() {
+		return endCol;
+	}
+
+	public void setEndCol(int endCol) {
+		this.endCol = endCol;
+	}
+
 	public int getChildCount()
 	{
 		return children.size();
@@ -102,7 +123,7 @@ public class CustomNode {
 	
 	@Override
 	public String toString() {
-		return name+" "+optional+" "+supportMultipleValues;
+		return name+" "+optional+" "+supportMultipleValues+" "+grandChildrenCount+" "+startCol+" "+endCol;
 	}
 	
 	

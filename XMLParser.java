@@ -14,8 +14,8 @@ public class XMLParser {
 	
 	private DocumentBuilder parser;
 	private Document doc;
-	
-	private static String optionalComment="optional";
+	private int treeHeight;
+	private static String optionalComment="Optional:";
 	private static String multipleValueComment="multiple";
 	public XMLParser(String data)
 	{
@@ -42,7 +42,7 @@ public class XMLParser {
 	public CustomNode constructTree()
 	{
 		Node root=doc.getDocumentElement();
-		CustomNode parent=new CustomNode(null,root.getNodeName(),0,false,false);
+		CustomNode parent=new CustomNode(null,root.getNodeName(),0,false,false,root);
 		constructTree(parent,root);
 		return parent;
 	}
@@ -59,8 +59,7 @@ public class XMLParser {
 			{
 				optional=temp.getNodeValue().equals(optionalComment);
 				supportMultipleValues=temp.getNodeValue().equals(multipleValueComment);
-				
-				
+	
 			}
 			else if(temp.getNodeType()==Node.TEXT_NODE)
 			{
@@ -68,7 +67,8 @@ public class XMLParser {
 			}
 			else
 			{
-			CustomNode child=new CustomNode(customNode,temp.getNodeName(),customNode.getLevel()+1,optional,supportMultipleValues);
+			CustomNode child=new CustomNode(customNode,temp.getNodeName(),customNode.getLevel()+1,optional,supportMultipleValues,node);
+			treeHeight=Math.max(treeHeight,child.getLevel());
 			optional=false;
 			supportMultipleValues=false;
 			constructTree(child,temp);
@@ -76,5 +76,10 @@ public class XMLParser {
 		}
 		
 		
+	}
+	private int getTreeHeight()
+	{
+		
+		return treeHeight;
 	}
 }
